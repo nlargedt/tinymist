@@ -1,9 +1,6 @@
 name: Nightly Release
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
-    - cron: '0 23 * * *'
   workflow_dispatch:
     inputs:
       release_type:
@@ -73,7 +70,7 @@ jobs:
         echo "Latest revs: typst=$latest_typst_rev, typst.ts=$latest_reflexo_rev, typstyle=$latest_typstyle_rev, hl=$latest_typst_ansi_hl_rev"
         
         # Check for updates
-        need_update=false
+        need_update=true
         if [[ "$current_typst_rev" != "$latest_typst_rev" ]] || [[ -z "$current_typst_rev" ]]; then
           echo "Typst needs update"
           need_update=true
@@ -99,7 +96,7 @@ jobs:
         # this indicates that the RC release was successful. Only at this 
         # point will the nightly release be published.
 
-        need_release=false
+        need_release=true
         if [ "$release_type" = "nightly" ]; then
             if [ "$need_update" = "false" ] && echo "$current_version" | grep -q -- '-rc[0-9]\+$'; then
                 echo "RC version detected with no updates needed, nightly release condition met"
